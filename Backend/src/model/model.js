@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 const Schema=mongoose.Schema;
 
 
-export const userSchema =new Schema({
+export const infoUserSchema =new Schema({
   "Patient Id":{
       type:String,
       default:""
@@ -105,4 +105,28 @@ export const userSchema =new Schema({
   }
 },
 )
+
+export const userSchema =new Schema({
+  name:{
+    type:String,
+    required:true,
+    max:50,
+    unique:true
+  },
+  email:{
+    type:String,
+    required:true,
+    max:50
+  },
+  password:{
+    type:String,
+    required:true,
+    min:3,
+    max:40
+  }
+},
+  {timestamps:true}
+)
+
+
 
