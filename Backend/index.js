@@ -11,27 +11,24 @@ const PORT=2000;
 app.use(express.urlencoded({extended:true}))
 app.use(bodyParser.json())
 
-routes(app)
+
 
 app.use((req,res,next)=>{
     console.log("JWT")
     console.log(req.headers.authorization)
     if(req.headers && req.headers.authorization && req.headers.authorization.split(' ')[0] === 'JWT'){
         jsonwebtoken.verify(req.headers.authorization.split(' ')[1],'RAZORPAY',(err,decode)=>{
-            if(err){
-                req.user=undefined
-                res.send("Error")
-            }else{
-                req.user=decode
-                next()
-            }
+            if(err) req.user=undefined
+            req.user=decode
+            next()
         })
-
     }else{
         
         req.user=undefined
     }
 })
+
+routes(app)
 
 
 
