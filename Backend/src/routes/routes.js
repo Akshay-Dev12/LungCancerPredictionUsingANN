@@ -1,14 +1,14 @@
 import {
-    infoUser,registerUser,login,loginReq
+    infoUser,registerUser,login,loginReq,testDb
 } from '../controllers/controllers'
 
 const routes=(app)=>{   
 
- app.route(loginReq,'/infoUser')
-     .get((req,res)=>{
+ app.route('/infoUser')
+     .get(loginReq,(req,res)=>{
         res.send("Pass the opening page")
      })
-     .post(infoUser)
+     .post(loginReq,infoUser)
 
 app.route('/register')
     .get((req,res)=>{
@@ -26,7 +26,10 @@ app.route('/test')
    .get(loginReq,((req,res)=>{
     res.send("Verified")
    }))    
-     
+
+app.route('/testDb')
+    .get(testDb)   
+
     
 }
 
