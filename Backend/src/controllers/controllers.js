@@ -86,49 +86,160 @@ export const testDb=(async(req,res)=>{
         {
             $project:{
                 _id:0,
+                input:{
                 Age:1,
                 Gender:1,
-                "Air Pollution" : 1,
-                "Alcohol use" : 1,
-                "Dust Allergy" : 1,
-               "OccuPational Hazards" : 1,
-               "Genetic Risk" : 1,
-               "chronic Lung Disease" : 1,
-               "Balanced Diet" : 1,
-               Obesity : 1,
-               Smoking : 1,
-               "Passive Smoker" : 1,
-               "Chest Pain" : 1,
-               "Coughing of Blood" : 1,
-               "Fatigue" : 1,
-               "Weight Loss" : 1,
-               "Shortness of Breath" : 1,
-               "Wheezing" : 1,
-               "Swallowing Difficulty" : 1,
-               "Clubbing of Finger Nails" : 1,
-               "Frequent Cold" : 1,
-               "Dry Cough" : 1,
-               "Snoring" : 1,
-               Level:{
-                $switch: {
-                    branches: [
-                      { case: { $eq: [ "$Level", "High" ] }, "then": 3 },
-                      { "case": { "$eq": [ "$Level", "Medium" ] }, "then": 2 },
-                      { "case": { "$eq": [ "$Level", "Low" ] }, "then": 1 }
-                    ],
-                    "default": 1
-                  }
-               }
+                "Air Pollution" : "$Air Pollution",
+                "Alcohol use" : "$Alcohol use",
+                "Dust Allergy" : "$Dust Allergy",
+               "OccuPational Hazards" : "$OccuPational Hazards",
+               "Genetic Risk" : "$Genetic Risk",
+               "chronic Lung Disease" : "$chronic Lung Disease",
+               "Balanced Diet" : "$Balanced Diet",
+               Obesity : "$Obesity",
+               Smoking : "$Smoking",
+               "Passive Smoker" : "$Passive Smoker",
+               "Chest Pain" : "$Chest Pain",
+               "Coughing of Blood" : "$Coughing of Blood",
+               "Fatigue" : "$Fatigue",
+               "Weight Loss" : "$Weight Loss",
+               "Shortness of Breath" : "$Shortness of Breath",
+               "Wheezing" : "$Wheezing",
+               "Swallowing Difficulty" : "$Swallowing Difficulty",
+               "Clubbing of Finger Nails" : "$Clubbing of Finger Nails",
+               "Frequent Cold" : "$Frequent Cold",
+               "Dry Cough" : "$Dry Cough",
+               "Snoring" : "$Snoring"
+                },
+                output:{
+                    Level:{
+                        $switch: {
+                            branches: [
+                              { case: { $eq: [ "$Level", "High" ] }, "then": 2},
+                              { "case": { "$eq": [ "$Level", "Medium" ] }, "then": 1},
+                              { "case": { "$eq": [ "$Level", "Low" ] }, "then": 0}
+                            ],
+                            "default": 1
+                          }
+                       }
+
+                }
+
             }
-        }
+        },
+        {$limit:100}
     ])
 
+    net.train(allData);
+
+    // const output =net.run({
+    //     "index" : 19,
+    //     "Age" : 14,
+    //     "Gender" : 1,
+    //     "Air Pollution" : 2,
+    //     "Alcohol use" : 4,
+    //     "Dust Allergy" : 5,
+    //     "OccuPational Hazards" : 6,
+    //     "Genetic Risk" : 5,
+    //     "chronic Lung Disease" : 5,
+    //     "Balanced Diet" : 4,
+    //     "Obesity" : 6,
+    //     "Smoking" : 5,
+    //     "Passive Smoker" : 4,
+    //     "Chest Pain" : 6,
+    //     "Coughing of Blood" : 5,
+    //     "Fatigue" : 5,
+    //     "Weight Loss" : 3,
+    //     "Shortness of Breath" : 2,
+    //     "Wheezing" : 1,
+    //     "Swallowing Difficulty" : 4,
+    //     "Clubbing of Finger Nails" : 7,
+    //     "Frequent Cold" : 2,
+    //     "Dry Cough" : 1,
+    //     "Snoring" : 6,
+    // })
+
+    const output=net.run({
+        "Age" : 44,
+        "Gender" : 1,
+        "Air Pollution" : 6,
+        "Alcohol use" : 7,
+        "Dust Allergy" : 7,
+        "OccuPational Hazards" : 7,
+        "Genetic Risk" : 7,
+        "chronic Lung Disease" : 6,
+        "Balanced Diet" : 7,
+        "Obesity" : 7,
+        "Smoking" : 7,
+        "Passive Smoker" : 8,
+        "Chest Pain" : 7,
+        "Coughing of Blood" : 7,
+        "Fatigue" : 5,
+        "Weight Loss" : 3,
+        "Shortness of Breath" : 2,
+        "Wheezing" : 7,
+        "Swallowing Difficulty" : 8,
+        "Clubbing of Finger Nails" : 2,
+        "Frequent Cold" : 4,
+        "Dry Cough" : 5,
+        "Snoring" : 3,
+    }) //High
     
+    // const output=net.run({
+    //  "Age" : 52,
+    // "Gender" : 2,
+    // "Air Pollution" : 2,
+    // "Alcohol use" : 4,
+    // "Dust Allergy" : 5,
+    // "OccuPational Hazards" : 4,
+    // "Genetic Risk" : 3,
+    // "chronic Lung Disease" : 2,
+    // "Balanced Diet" : 2,
+    // "Obesity" : 4,
+    // "Smoking" : 3,
+    // "Passive Smoker" : 2,
+    // "Chest Pain" : 2,
+    // "Coughing of Blood" : 4,
+    // "Fatigue" : 3,
+    // "Weight Loss" : 4,
+    // "Shortness of Breath" : 2,
+    // "Wheezing" : 2,
+    // "Swallowing Difficulty" : 3,
+    // "Clubbing of Finger Nails" : 1,
+    // "Frequent Cold" : 2,
+    // "Dry Cough" : 3,
+    // "Snoring" : 4,
+    // }) //Low crrct 
+
+    // const output=net.run({
+    // "Age" : 35,
+    // "Gender" : 2,
+    // "Air Pollution" : 4,
+    // "Alcohol use" : 5,
+    // "Dust Allergy" : 6,
+    // "OccuPational Hazards" : 5,
+    // "Genetic Risk" : 6,
+    // "chronic Lung Disease" : 5,
+    // "Balanced Diet" : 5,
+    // "Obesity" : 5,
+    // "Smoking" : 6,
+    // "Passive Smoker" : 6,
+    // "Chest Pain" : 6,
+    // "Coughing of Blood" : 5,
+    // "Fatigue" : 1,
+    // "Weight Loss" : 4,
+    // "Shortness of Breath" : 3,
+    // "Wheezing" : 2,
+    // "Swallowing Difficulty" : 4,
+    // "Clubbing of Finger Nails" : 6,
+    // "Frequent Cold" : 2,
+    // "Dry Cough" : 4,
+    // "Snoring" : 1
+    // }) //medium ccrct
 
 
+    console.log(output);
 
-    console.log(allData)
-
-    res.send(allData[1])
+    
+    res.send(output)
 })
-
