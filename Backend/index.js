@@ -44,7 +44,7 @@ mongoose.connect(db,{
 
 
 app.use(express.static('public'));
-app.use('/images', express.static('images'))
+app.use('/images', express.static('images'));
 
 
 

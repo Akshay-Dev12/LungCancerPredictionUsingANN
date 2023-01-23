@@ -65,15 +65,101 @@ export const login=(async(req,res)=>{
 
 export const infoUser =((req,res)=>{
     let userBody=req.body;
+
+
     let newUser=personsInfos(userBody)
-            newUser.save(async(err,data)=>{
+            newUser.save(async(err,userBody)=>{
                 if(err){
                     console.log(err)
                     res.send(err)
                 }
                     else{
 
-                        res.send(data)
+                        let outputObj={
+                            "Age" : userBody.Age,
+                            "Gender" : userBody.Gender,
+                            "Air Pollution" : userBody["Air Pollution"],
+                            "Alcohol use" : userBody["Alcohol use"],
+                            "Dust Allergy" : userBody["Dust Allergy"],
+                            "OccuPational Hazards" : userBody["OccuPational Hazards"],
+                            "Genetic Risk" : userBody["Genetic Risk"],
+                            "chronic Lung Disease" : userBody["chronic Lung Disease"],
+                            "Balanced Diet" : userBody["Balanced Diet"],
+                            "Obesity" : userBody.Obesity,
+                            "Smoking" : userBody.Smoking,
+                            "Passive Smoker" : userBody["Passive Smoker"],
+                            "Chest Pain" : userBody["Chest Pain"],
+                            "Coughing of Blood" : userBody["Coughing of Blood"],
+                            "Fatigue" : userBody.Fatigue,
+                            "Weight Loss" : userBody["Weight Loss"],
+                            "Shortness of Breath" : userBody["Shortness of Breath"],
+                            "Wheezing" : userBody.Wheezing,
+                            "Swallowing Difficulty" : userBody["Swallowing Difficulty"],
+                            "Clubbing of Finger Nails" : userBody["Clubbing of Finger Nails"],
+                            "Frequent Cold" : userBody["Frequent Cold"],
+                            "Dry Cough" : userBody["Dry Cough"],
+                            "Snoring" : userBody.Snoring
+                            }
+                            console.log(outputObj)
+
+                        let allData=await  personsInfos.aggregate([
+                            {
+                                $project:{
+                                    _id:0,
+                                    input:{
+                                    Age:"$Age",
+                                    Gender:"$Gender",
+                                    "Air Pollution" : "$Air Pollution",
+                                    "Alcohol use" : "$Alcohol use",
+                                    "Dust Allergy" : "$Dust Allergy",
+                                   "OccuPational Hazards" : "$OccuPational Hazards",
+                                   "Genetic Risk" : "$Genetic Risk",
+                                   "chronic Lung Disease" : "$chronic Lung Disease",
+                                   "Balanced Diet" : "$Balanced Diet",
+                                   Obesity : "$Obesity",
+                                   Smoking : "$Smoking",
+                                   "Passive Smoker" : "$Passive Smoker",
+                                   "Chest Pain" : "$Chest Pain",
+                                   "Coughing of Blood" : "$Coughing of Blood",
+                                   "Fatigue" : "$Fatigue",
+                                   "Weight Loss" : "$Weight Loss",
+                                   "Shortness of Breath" : "$Shortness of Breath",
+                                   "Wheezing" : "$Wheezing",
+                                   "Swallowing Difficulty" : "$Swallowing Difficulty",
+                                   "Clubbing of Finger Nails" : "$Clubbing of Finger Nails",
+                                   "Frequent Cold" : "$Frequent Cold",
+                                   "Dry Cough" : "$Dry Cough",
+                                   "Snoring" : "$Snoring"
+                                    },
+                                    output:{
+                                        Level:{
+                                            $switch: {
+                                                branches: [
+                                                  { "case": { "$eq": [ "$Level", "High" ] }, "then": 2},
+                                                  { "case": { "$eq": [ "$Level", "Medium" ] }, "then": 1},
+                                                  { "case": { "$eq": [ "$Level", "Low" ] }, "then": 0}
+                                                ],
+                                                "default": 1
+                                              }
+                                           }
+                    
+                                    }
+                    
+                                }
+                            },
+                            {$limit:100}
+                        ])
+                    
+                        net.train(allData);
+
+                        const output=net.run(outputObj)
+
+                        let resp={
+                            output:output,
+                            userDetails:userBody
+                        }
+
+                        res.send(resp)
 
 
                     }
@@ -87,8 +173,8 @@ export const testDb=(async(req,res)=>{
             $project:{
                 _id:0,
                 input:{
-                Age:1,
-                Gender:1,
+                Age:"$Age",
+                Gender:"$Gender",
                 "Air Pollution" : "$Air Pollution",
                 "Alcohol use" : "$Alcohol use",
                 "Dust Allergy" : "$Dust Allergy",
@@ -115,7 +201,7 @@ export const testDb=(async(req,res)=>{
                     Level:{
                         $switch: {
                             branches: [
-                              { case: { $eq: [ "$Level", "High" ] }, "then": 2},
+                              { "case": { "$eq": [ "$Level", "High" ] }, "then": 2},
                               { "case": { "$eq": [ "$Level", "Medium" ] }, "then": 1},
                               { "case": { "$eq": [ "$Level", "Low" ] }, "then": 0}
                             ],
@@ -159,31 +245,31 @@ export const testDb=(async(req,res)=>{
     //     "Snoring" : 6,
     // })
 
-    const output=net.run({
-        "Age" : 44,
-        "Gender" : 1,
-        "Air Pollution" : 6,
-        "Alcohol use" : 7,
-        "Dust Allergy" : 7,
-        "OccuPational Hazards" : 7,
-        "Genetic Risk" : 7,
-        "chronic Lung Disease" : 6,
-        "Balanced Diet" : 7,
-        "Obesity" : 7,
-        "Smoking" : 7,
-        "Passive Smoker" : 8,
-        "Chest Pain" : 7,
-        "Coughing of Blood" : 7,
-        "Fatigue" : 5,
-        "Weight Loss" : 3,
-        "Shortness of Breath" : 2,
-        "Wheezing" : 7,
-        "Swallowing Difficulty" : 8,
-        "Clubbing of Finger Nails" : 2,
-        "Frequent Cold" : 4,
-        "Dry Cough" : 5,
-        "Snoring" : 3,
-    }) //High
+    // const output=net.run({
+    //     "Age" : 44,
+    //     "Gender" : 1,
+    //     "Air Pollution" : 6,
+    //     "Alcohol use" : 7,
+    //     "Dust Allergy" : 7,
+    //     "OccuPational Hazards" : 7,
+    //     "Genetic Risk" : 7,
+    //     "chronic Lung Disease" : 6,
+    //     "Balanced Diet" : 7,
+    //     "Obesity" : 7,
+    //     "Smoking" : 7,
+    //     "Passive Smoker" : 8,
+    //     "Chest Pain" : 7,
+    //     "Coughing of Blood" : 7,
+    //     "Fatigue" : 5,
+    //     "Weight Loss" : 3,
+    //     "Shortness of Breath" : 2,
+    //     "Wheezing" : 7,
+    //     "Swallowing Difficulty" : 8,
+    //     "Clubbing of Finger Nails" : 2,
+    //     "Frequent Cold" : 4,
+    //     "Dry Cough" : 5,
+    //     "Snoring" : 3,
+    // }) //High
     
     // const output=net.run({
     //  "Age" : 52,
@@ -211,31 +297,31 @@ export const testDb=(async(req,res)=>{
     // "Snoring" : 4,
     // }) //Low crrct 
 
-    // const output=net.run({
-    // "Age" : 35,
-    // "Gender" : 2,
-    // "Air Pollution" : 4,
-    // "Alcohol use" : 5,
-    // "Dust Allergy" : 6,
-    // "OccuPational Hazards" : 5,
-    // "Genetic Risk" : 6,
-    // "chronic Lung Disease" : 5,
-    // "Balanced Diet" : 5,
-    // "Obesity" : 5,
-    // "Smoking" : 6,
-    // "Passive Smoker" : 6,
-    // "Chest Pain" : 6,
-    // "Coughing of Blood" : 5,
-    // "Fatigue" : 1,
-    // "Weight Loss" : 4,
-    // "Shortness of Breath" : 3,
-    // "Wheezing" : 2,
-    // "Swallowing Difficulty" : 4,
-    // "Clubbing of Finger Nails" : 6,
-    // "Frequent Cold" : 2,
-    // "Dry Cough" : 4,
-    // "Snoring" : 1
-    // }) //medium ccrct
+    const output=net.run({
+    "Age" : 35,
+    "Gender" : 2,
+    "Air Pollution" : 4,
+    "Alcohol use" : 5,
+    "Dust Allergy" : 6,
+    "OccuPational Hazards" : 5,
+    "Genetic Risk" : 6,
+    "chronic Lung Disease" : 5,
+    "Balanced Diet" : 5,
+    "Obesity" : 5,
+    "Smoking" : 6,
+    "Passive Smoker" : 6,
+    "Chest Pain" : 6,
+    "Coughing of Blood" : 5,
+    "Fatigue" : 1,
+    "Weight Loss" : 4,
+    "Shortness of Breath" : 3,
+    "Wheezing" : 2,
+    "Swallowing Difficulty" : 4,
+    "Clubbing of Finger Nails" : 6,
+    "Frequent Cold" : 2,
+    "Dry Cough" : 4,
+    "Snoring" : 1
+    }) //medium ccrct
 
 
     console.log(output);
