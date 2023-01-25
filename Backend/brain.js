@@ -1,3 +1,6 @@
+
+// Used for the study 
+
 var brain=require("brain.js")
 
 var ObjectId = require('mongodb').ObjectId;
@@ -185,7 +188,7 @@ net.train([
 ])
 
 const output =net.run({
-  "index" : 0,
+    "index" : 0,
     "Age" : 33,
     "Gender" : 1,
     "Air Pollution" : 2,

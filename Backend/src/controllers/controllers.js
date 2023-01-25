@@ -1,9 +1,11 @@
 
 import mongoose, { ConnectionStates } from "mongoose";
-import {userSchema,infoUserSchema} from "../model/model"
+import {userSchema,infoUserSchema} from "../model/model";
 import bcrypt, { compare } from "bcrypt";
 const saltRounds = 10;
 import jwt from "jsonwebtoken"
+import * as dotenv from 'dotenv' 
+dotenv.config()
 var brain=require('brain.js')
 const config = {
     binaryThresh: 0.5, // ¯\_(ツ)_/¯
@@ -11,10 +13,11 @@ const config = {
     activation: 'sigmoid' // supported activation types: ['sigmoid', 'relu', 'leaky-relu', 'tanh']
   };
   
-  const net = new brain.NeuralNetwork(config);
+const net = new brain.NeuralNetwork(config);
 
 
-const personsInfos=mongoose.model('personsInfos',infoUserSchema)
+const personsInfos=mongoose.model('personsInfos',infoUserSchema);
+
 const User=mongoose.model('User',userSchema)
 
 export const loginReq=((req,res,next)=>{
@@ -57,7 +60,7 @@ export const login=(async(req,res)=>{
     !user && res.send("No user")
     const match = await bcrypt.compare(login.password, user.password);
     if(match){
-        res.json({token:jwt.sign({email:match.email,username:match.name,id:match.id},'RAZORPAY')})
+        res.json({token:jwt.sign({email:match.email,username:match.name,id:match.id},process.env.SECRET_KEY)})
     }else{
         res.send("Credientials not matched")
     }
