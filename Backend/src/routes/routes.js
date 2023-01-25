@@ -4,7 +4,7 @@ import {
 
 const routes=(app)=>{   
 
- app.route('/infoUser')
+ app.route('/infoUser')  
      .get(loginReq,(req,res)=>{
         res.send("Pass the opening page")
      })
@@ -12,7 +12,7 @@ const routes=(app)=>{
 
 app.route('/register')
     .get((req,res)=>{
-        res.send("Pass the registration page")
+        res.send("Pass the user registration page")
     })     
     .post(registerUser)
 
