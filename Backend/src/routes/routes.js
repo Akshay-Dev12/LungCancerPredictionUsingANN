@@ -30,7 +30,6 @@ app.route('/test')
 app.route('/testDb')
     .get(testDb)   
 
-    
 }
 
 export default routes;

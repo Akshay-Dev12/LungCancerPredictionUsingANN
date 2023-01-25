@@ -4,7 +4,7 @@ var ObjectId = require('mongodb').ObjectId;
 const config = {
     binaryThresh: 0.5, // ¯\_(ツ)_/¯
     hiddenLayers: [3], // array of ints for the sizes of the hidden layers in the network
-    activation: 'tanh' // supported activation types: ['sigmoid', 'relu', 'leaky-relu', 'tanh']
+    activation: 'sigmoid' // supported activation types: ['sigmoid', 'relu', 'leaky-relu', 'tanh']
   };
   const net = new brain.NeuralNetwork(config);
 
@@ -185,30 +185,30 @@ net.train([
 ])
 
 const output =net.run({
-   "index" : 4,
-    "Age" : 46,
+  "index" : 0,
+    "Age" : 33,
     "Gender" : 1,
-    "Air Pollution" : 6,
-    "Alcohol use" : 8,
-    "Dust Allergy" : 7,
-    "OccuPational Hazards" : 7,
-    "Genetic Risk" : 7,
-    "chronic Lung Disease" : 6,
-    "Balanced Diet" : 7,
-    "Obesity" : 7,
-    "Smoking" : 8,
-    "Passive Smoker" : 7,
-    "Chest Pain" : 7,
-    "Coughing of Blood" : 9,
+    "Air Pollution" : 2,
+    "Alcohol use" : 4,
+    "Dust Allergy" : 5,
+    "OccuPational Hazards" : 4,
+    "Genetic Risk" : 3,
+    "chronic Lung Disease" : 2,
+    "Balanced Diet" : 2,
+    "Obesity" : 4,
+    "Smoking" : 3,
+    "Passive Smoker" : 2,
+    "Chest Pain" : 2,
+    "Coughing of Blood" : 4,
     "Fatigue" : 3,
-    "Weight Loss" : 2,
-    "Shortness of Breath" : 4,
-    "Wheezing" : 1,
-    "Swallowing Difficulty" : 4,
-    "Clubbing of Finger Nails" : 2,
-    "Frequent Cold" : 4,
-    "Dry Cough" : 2,
-    "Snoring" : 3,
+    "Weight Loss" : 4,
+    "Shortness of Breath" : 2,
+    "Wheezing" : 2,
+    "Swallowing Difficulty" : 3,
+    "Clubbing of Finger Nails" : 1,
+    "Frequent Cold" : 2,
+    "Dry Cough" : 3,
+    "Snoring" : 4,
 })
 
 console.log(output);
